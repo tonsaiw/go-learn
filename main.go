@@ -1,31 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"net/http"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/tonsaiw/go-learn/application"
 )
 
 
 func main() {
-	router := chi.NewRouter()
-	router.Use(middleware.Logger)
-	router.Get("/hello", basicHandler)
-
-	server := &http.Server{
-		Addr: ":3000",
-		Handler: router,
-	}
-
-	err := server.ListenAndServe()
+	app := application.New()
+	err := app.Start(context.Background())
 	if err != nil {
-		fmt.Println("Error starting server:", err)
+		fmt.Printf("Error starting application: %v\n", err)
 	}
-	fmt.Println("Hello, World!")
-}
-
-func basicHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello, World!"))
 }
