@@ -1,7 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
+
 
 func main() {
+	server := &http.Server{
+		Addr: ":3000",
+		Handler: http.HandlerFunc(basicHandler),
+	}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		fmt.Println("Error starting server:", err)
+	}
 	fmt.Println("Hello, World!")
+}
+
+func basicHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello, World!"))
 }
